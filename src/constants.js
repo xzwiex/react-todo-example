@@ -1,0 +1,3 @@
+export const REQUEST_USER_INFO  = 'REQUEST_USER_INFO';
+export const RECIEVE_USER_INFO  = 'RECIEVE_USER_INFO';
+export const ERROR_USER_INFO    = 'ERROR_USER_INFO';
