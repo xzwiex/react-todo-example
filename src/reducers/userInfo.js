@@ -12,13 +12,10 @@ const initialState = {
 export default function userInfo(state = initialState, action) {
 
   switch (action.type) {
-    case REQUEST_USER_INFO:
-      return  _.merge( {}, state, { user : { isFetching : true } }  )
     case RECIEVE_USER_INFO:
-      return  _.merge( {}, state, { user : { isFetching : true } }  )
+      return  Object.assign( {}, state, { user : action.response }  )
     case ERROR_USER_INFO:
-      return  _.merge( {}, state, { user : { isFetching : false, hasErrors: true } }  )
-
+        return  Object.assign( {}, state, { user : { authorized : false } }  )
     default:
       return state;
   }

@@ -7,6 +7,11 @@ class ApplicationPage extends Component {
   constructor() {
     super()
     this.clickHandler = this.handleClick.bind(this)
+
+  }
+
+  componentDidMount() {
+    this.props.loadUserInfo()
   }
 
   handleClick() {

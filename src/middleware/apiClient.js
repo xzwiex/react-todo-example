@@ -1,5 +1,7 @@
+import { HTTP_REQUEST  } from '../constants'
 
-const baseUrl = 'http://localhost:3000'
+
+const baseUrl = 'http://localhost:9000'
 
 class HttpClient {
   get(url, params = {})  {
@@ -9,7 +11,7 @@ class HttpClient {
       headers: { 'Content-Type':'application/json' }
     }
 
-    return fetch(baseUrl + url)
+    return fetch(baseUrl + url, config)
     .then(response =>
       response.json().then(json => ({ json, response }))
     ).then(({ json, response }) => {
@@ -29,24 +31,33 @@ const httpClient = new HttpClient();
 console.log('Http client init')
 
 
+function actionWith(action, data) {
+  const finalAction = Object.assign({}, action, data)
+  delete finalAction[HTTP_REQUEST]
+  return finalAction
+}
+
+
 export default store => next => action => {
 
-  console.log('API CALL: ', store, next, action)
+  const request = action[HTTP_REQUEST]
 
-  if (!action.payload || !action.payload.url) {
+  if (!request) {
     return next(action)
   }
 
+  const { successType, errorType } = request
+
   httpClient
-  .get(action.payload.url)
+  .get(request.url)
   .then(
     response => {
       console.log(response)
-      return next(action)
+      return next(actionWith(action, { response, type : successType }))
     },
     error => {
       console.log(error)
-      return next(action)
+      return next(actionWith(action, { error, type : errorType }))
     }
   )
 
