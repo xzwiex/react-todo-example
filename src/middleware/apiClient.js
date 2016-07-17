@@ -6,15 +6,16 @@ const baseUrl = 'http://localhost:9000'
 class HttpClient {
   get(url, params = {})  {
 
-    let config = {
-      method: 'GET',
-      headers: { 'Content-Type':'application/json' }
-    }
+    const request = new Request(baseUrl + url, {
+      method: 'get',
+      mode : 'cors'
+    });
 
-    return fetch(baseUrl + url, config)
+    return fetch(request)
     .then(response =>
       response.json().then(json => ({ json, response }))
-    ).then(({ json, response }) => {
+    )
+    .then(({ json, response }) => {
 
       if (!response.ok) {
         return Promise.reject(json)
